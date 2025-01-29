@@ -7,7 +7,7 @@ This repository demonstrates a simple quantum circuit using Qiskit, which applie
 Ensure you have Python installed along with Qiskit. You can install Qiskit using:
 
 ```sh
-pip install qiskit qiskit-aer
+pip install qiskit qiskit-aer matplotlib
 ```
 
 ## Quantum Circuit Overview
@@ -16,38 +16,39 @@ pip install qiskit qiskit-aer
 - A **CNOT (CX) gate** entangles the two qubits.
 - Both qubits are **measured** into classical bits.
 - The circuit is simulated using **Qiskit's AerSimulator**.
+- The results are visualized using **matplotlib**.
 
 ## Code
 
 ```python
+#Imports
 from qiskit import QuantumCircuit, transpile
 from qiskit_aer import AerSimulator
+from qiskit.visualization import plot_histogram
+import matplotlib.pyplot as plt
 
-# Create a quantum circuit with two qubits and two classical bits
 qc = QuantumCircuit(2, 2)
 
-# Apply a Hadamard gate to the first qubit
+#HADAMARD GATE
 qc.h(0)
 
-# Apply a CNOT (CX) gate with the first qubit as control and the second as target
+#CNOT GATE
 qc.cx(0, 1)
 
-# Measure both qubits
+#To measure both qubits
 qc.measure([0, 1], [0, 1])
-
-# Use the AerSimulator from qiskit_aer
 simulator = AerSimulator()
-
-# Transpile the circuit for the simulator
+#Transpile the Circuit
 compiled_circuit = transpile(qc, simulator)
 
-# Run the simulation by directly calling the simulator
 job = simulator.run(compiled_circuit, shots=1024)
 
-# Get and print the results
 result = job.result()
 counts = result.get_counts()
 print("Measurement results:", counts)
+
+plot_histogram(counts)
+plt.show()
 ```
 
 ## Running the Simulation
@@ -58,7 +59,7 @@ Save the script and execute it using Python:
 python quantum_circuit.py
 ```
 
-After execution, you will see an output showing the measurement results in the form of bitstring counts.
+After execution, you will see an output showing the measurement results in the form of bitstring counts, along with a histogram visualization of the results.
 
 ## Expected Results
 
@@ -67,3 +68,4 @@ Since the Hadamard gate creates superposition and the CNOT gate entangles the qu
 ## License
 
 This project is licensed under the MIT License.
+
